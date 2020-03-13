@@ -82,7 +82,7 @@ var player = {
         if (player.keys && player.keys["ArrowRight"]) {
 
             for (var i = 0; i < walls.length; i++) {
-                console.log(player.x, walls[i].x)
+                //console.log(player.x, walls[i].x)
                 if (player.x + player.width + 1.5 >= walls[i].x && player.x + player.width + 1.5 <= walls[i].x + walls[i].width) {
                     if (player.y <= walls[i].y + walls[i].height && player.y >= walls[i].y)
                         player.velocity_x = 0
@@ -126,4 +126,4 @@ var player = {
 }
 
 startGame();
-console.log(wall2)
+//console.log(wall2)
