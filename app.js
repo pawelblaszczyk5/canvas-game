@@ -16,7 +16,7 @@ function startGame() {
     game.start();
     wall = new components(900, 20, "black", 0, 580)
     wall2 = new components(20, 400, "black", 0, 300)
-    wall3 = new components(20, 30, "black,", 400, 550)
+    wall3 = new components(20, 50, "black,", 400, 530)
     walls.push(wall2, wall, wall3)
 }
 
@@ -57,6 +57,7 @@ var player = {
     velocity_y: 0,
     onAir: true,
     jump_count: 0,
+    collision_right: false,
     movement: function () {
         this.velocity_x = 0;
         window.addEventListener('keydown', function (e) {
@@ -77,22 +78,27 @@ var player = {
                 player.onAir = true
             }
         }
+        if (player.keys && player.keys["ArrowRight"]) {
+            if (this.collision_right == false)
+                player.velocity_x = 1.5
+        }
         player.y += this.velocity_y
         player.x += this.velocity_x
         //right collision
-        if (this.velocity_x > 0) {
-            for (var i = 0; i < walls.length; i++) {
-                if (player.x + player.width + player.velocity_x >= walls[i].x && player.x + player.velocity_x < walls[i].x + walls[i].width && player.y + player.height >= walls[i].y + walls[i].height && player.y <= walls[i].y) {
 
-                    {
-                        this.velocity_x = 0
-                    }
-                } else if (player.keys && player.keys["ArrowRight"]) {
-                    player.velocity_x = 1.5
 
+        for (var i = 0; i < walls.length; i++) {
+            if (player.x + player.width + player.velocity_x >= walls[i].x && player.x + player.velocity_x < walls[i].x + walls[i].width && player.y + player.height >= walls[i].y && player.y <= walls[i].y + walls[i].height) {
+                {
+                    this.collision_right = true
+                    player.velocity_x = 0
+                    //console.log("prawo")
                 }
+            } else {
+                this.collision_right = false
             }
         }
+
         //left collision
         if (this.velocity_x < 0) {
             for (var i = 0; i < walls.length; i++) {
@@ -103,16 +109,17 @@ var player = {
         }
 
         //down collision
-        if (player.velocity_y > 0)
-            for (var i = 0; i < walls.length; i++) {
-
-                if (player.y + player.height + player.velocity_y >= walls[i].y && player.y + player.velocity_y <= walls[i].y + walls[i].height && player.x >= walls[i].x && player.x + player.width <= walls[i].x + walls[i].width) {
-                    player.velocity_y = 0;
-                    player.y = walls[i].y - walls[i].height + 1
-                    console.log(player.y)
-                    player.onAir = false
-                }
+        player.onAir = true
+        for (var i = 0; i < walls.length; i++) {
+            if (player.y + player.height + player.velocity_y >= walls[i].y && player.y + player.velocity_y <= walls[i].y + walls[i].height && player.x >= walls[i].x && player.x + player.width <= walls[i].x + walls[i].width) {
+                player.velocity_y = 0;
+                console.log("dół")
+                player.y = walls[i].y - walls[i].height - 1
+                // console.log(player.y)
+                player.onAir = false
             }
+        }
+
 
         if (player.onAir)
             player.velocity_y += 0.2
