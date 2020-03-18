@@ -68,29 +68,9 @@ var player = {
             player.keys[e.key] = false;
         })
         if (player.keys && player.keys["ArrowLeft"]) {
-
-            for (var i = 0; i < walls.length; i++) {
-
-                if (player.x + player.width - 1.5 >= walls[i].x && player.x + player.width + 1.5 <= walls[i].x + walls[i].width) {
-                    if (player.y <= walls[i].y + walls[i].height && player.y >= walls[i].y)
-                        player.velocity_x = 0
-                } else {
-                    player.velocity_x = -1.5
-                }
-            }
+            player.velocity_x = -1.5
         }
-        if (player.keys && player.keys["ArrowRight"]) {
 
-            for (var i = 0; i < walls.length; i++) {
-                //console.log(player.x, walls[i].x)
-                if (player.x + player.width + 1.5 >= walls[i].x && player.x + player.width + 1.5 <= walls[i].x + walls[i].width) {
-                    if (player.y <= walls[i].y + walls[i].height && player.y >= walls[i].y)
-                        player.velocity_x = 0
-                } else {
-                    player.velocity_x = +1.5
-                }
-            }
-        }
         if (player.keys && player.keys["ArrowUp"]) {
             if (this.onAir == false) {
                 player.velocity_y = -5;
@@ -99,19 +79,41 @@ var player = {
         }
         player.y += this.velocity_y
         player.x += this.velocity_x
+        //right collision
+        if (this.velocity_x > 0) {
+            for (var i = 0; i < walls.length; i++) {
+                if (player.x + player.width + player.velocity_x >= walls[i].x && player.x + player.velocity_x < walls[i].x + walls[i].width && player.y + player.height >= walls[i].y + walls[i].height && player.y <= walls[i].y) {
 
-        for (var i = 0; i < walls.length; i++) {
-            if (player.y + player.height + player.velocity_y >= walls[i].y && player.y + player.height + player.velocity_y <= walls[i].y + walls[i].height) {
-                if (player.x <= walls[i].x + walls[i].width && player.x >= walls[i].x) {
-                    player.y = walls[i].y - player.height
-                    player.velocity_y = 0
+                    {
+                        this.velocity_x = 0
+                    }
+                } else if (player.keys && player.keys["ArrowRight"]) {
+                    player.velocity_x = 1.5
+
+                }
+            }
+        }
+        //left collision
+        if (this.velocity_x < 0) {
+            for (var i = 0; i < walls.length; i++) {
+                if (player.x + player.velocity_x <= walls[i].x + walls[i].width && player.x + player.velocity_x + player.width >= walls[i].x && player.y >= walls[i].y + walls[i].height && player.y + player.height <= walls[i].y) {
+                    this.velocity_x = 0
+                }
+            }
+        }
+
+        //down collision
+        if (player.velocity_y > 0)
+            for (var i = 0; i < walls.length; i++) {
+
+                if (player.y + player.height + player.velocity_y >= walls[i].y && player.y + player.velocity_y <= walls[i].y + walls[i].height && player.x >= walls[i].x && player.x + player.width <= walls[i].x + walls[i].width) {
+                    player.velocity_y = 0;
+                    player.y = walls[i].y - walls[i].height + 1
+                    console.log(player.y)
                     player.onAir = false
                 }
-            } else {
-                player.onAir = true
             }
 
-        }
         if (player.onAir)
             player.velocity_y += 0.2
 
