@@ -15,10 +15,11 @@ var walls = [];
 function startGame() {
     game.start();
     wall = new components(600, 20, "black", 0, 580)
+    wall5 = new components(500, 20, "black", 0, 540)
     wall2 = new components(20, 50, "black", 0, 550)
     wall3 = new components(20, 100, "black,", 400, 420)
     wall4 = new components(30, 60, "black", 100, 540)
-    walls.push(wall2, wall, wall3, wall4)
+    walls.push(wall2, wall, wall3, wall4, wall5)
 }
 
 
@@ -58,8 +59,6 @@ var player = {
     onAir: true,
     velocity_y: 0,
     jump_count: 0,
-    collision_right: false,
-    collision_left: false,
     crouching: false,
     floor: -1,
     movement: function () {
@@ -73,8 +72,8 @@ var player = {
             player.keys[e.key] = false;
         })
         if (player.keys && player.keys["ArrowLeft"]) {
-            if (this.collision_right == false)
-                player.velocity_x = -1.5
+
+            player.velocity_x = -1.5
         }
 
         if (player.keys && player.keys["ArrowUp"]) {
@@ -84,8 +83,8 @@ var player = {
             }
         }
         if (player.keys && player.keys["ArrowRight"]) {
-            if (this.collision_right == false)
-                player.velocity_x = 1.5
+
+            player.velocity_x = 1.5
         }
         if (player.keys && player.keys["ArrowDown"]) {
             if (player.crouching == false) {
@@ -94,21 +93,24 @@ var player = {
                 player.y += 10
             }
         } else if (player.crouching == true) {
-            player.crouching = false
-            player.height = 20
-            player.y -= 10
-
+            let vertical_collision = false
+            for (var i = 0; i < walls.length; i++) {
+                if (player.y - 10 + player.height + 10 + player.velocity_y >= walls[i].y && player.y - 10 + player.velocity_y <= walls[i].y + walls[i].height && player.x + player.width + player.velocity_x - 1 >= walls[i].x && player.x + 1 + player.velocity_x <= walls[i].x + walls[i].width) {
+                    vertical_collision = true
+                }
+            }
+            if (vertical_collision == false) {
+                player.crouching = false;
+                player.height = 20
+                player.y -= 10
+            }
         }
-
-
 
         //horizontal collision
 
         for (var i = 0; i < walls.length; i++) {
             if (player.x + player.width + player.velocity_x >= walls[i].x && player.x + player.velocity_x < walls[i].x + walls[i].width && player.y + player.height - 1 >= walls[i].y && player.y + 1 <= walls[i].y + walls[i].height) {
                 {
-
-                    player.collision_left = true
                     player.velocity_x = 0
                     if (player.x > walls[i].x)
                         player.x = walls[i].x + walls[i].width + 1
@@ -116,8 +118,6 @@ var player = {
                         player.x = walls[i].x - player.width - 1
 
                 }
-            } else {
-                player.collision_left = false;
             }
         }
         //is in air?
