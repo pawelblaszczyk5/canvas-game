@@ -15,7 +15,7 @@ var walls = [];
 function startGame() {
     game.start();
     wall = new components(600, 20, "black", 0, 580)
-    wall5 = new components(500, 20, "black", 0, 540)
+    wall5 = new components(500, 20, "black", 200, 540)
     wall2 = new components(20, 50, "black", 0, 550)
     wall3 = new components(20, 100, "black,", 400, 420)
     wall4 = new components(30, 60, "black", 100, 540)
