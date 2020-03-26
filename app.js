@@ -16,8 +16,9 @@ function startGame() {
     game.start();
     wall = new components(600, 20, "black", 0, 580)
     wall2 = new components(20, 50, "black", 0, 550)
-    wall3 = new components(20, 100, "black,", 400, 300)
-    walls.push(wall2, wall, wall3)
+    wall3 = new components(20, 100, "black,", 400, 420)
+    wall4 = new components(20, 60, "black", 100, 540)
+    walls.push(wall2, wall, wall3, wall4)
 }
 
 
@@ -60,6 +61,7 @@ var player = {
     collision_right: false,
     collision_left: false,
     crouching: false,
+    floor: -1,
     movement: function () {
         this.velocity_x = 0;
         window.addEventListener('keydown', function (e) {
@@ -131,17 +133,31 @@ var player = {
                 player.collision_left = false;
             }
         }
+        //is in air?
+        if (player.floor != -1) {
 
+            if (player.y + player.height + player.velocity_y + 1 != walls[player.floor].y || !(player.x + player.width + player.velocity_x - 1 >= walls[player.floor].x && player.x + 1 + player.velocity_x <= walls[player.floor].x + walls[player.floor].width)) {
+                player.onAir = true
+                player.floor = -1
 
-        //down collision
-        player.onAir = true
+            }
+        }
+
+        //vertical collision
+
         for (var i = 0; i < walls.length; i++) {
             if (player.y + player.height + player.velocity_y >= walls[i].y && player.y + player.velocity_y <= walls[i].y + walls[i].height && player.x + player.width + player.velocity_x - 1 >= walls[i].x && player.x + 1 + player.velocity_x <= walls[i].x + walls[i].width) {
+                if (player.y < walls[i].y) {
+                    player.floor = i
+                    console.log(player.floor)
+                    player.velocity_y = 0;
+                    player.y = walls[i].y - player.height - 1
 
-                player.velocity_y = 0;
-                player.y = walls[i].y - player.height - 1
-
-                player.onAir = false
+                    player.onAir = false
+                } else {
+                    player.velocity_y = 0
+                    player.y = walls[i].y + walls[i].height + 1
+                }
             }
         }
 
