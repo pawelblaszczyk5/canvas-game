@@ -123,7 +123,7 @@ var player = {
         //is in air?
         if (player.floor != -1) {
 
-            if (player.y + player.height + player.velocity_y + 1 != walls[player.floor].y || !(player.x + player.width + player.velocity_x + 1 >= walls[player.floor].x && player.x - 1 + player.velocity_x <= walls[player.floor].x + walls[player.floor].width)) {
+            if (player.y + player.height + player.velocity_y + 1 != walls[player.floor].y || !(player.x + player.width + player.velocity_x - 1 >= walls[player.floor].x && player.x + 1 + player.velocity_x <= walls[player.floor].x + walls[player.floor].width)) {
                 player.onAir = true
                 player.floor = -1
 
