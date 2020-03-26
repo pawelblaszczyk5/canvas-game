@@ -106,7 +106,7 @@ var player = {
 
 
         for (var i = 0; i < walls.length; i++) {
-            if (player.x + player.width + player.velocity_x >= walls[i].x && player.x + player.velocity_x < walls[i].x + walls[i].width && player.y + player.height >= walls[i].y && player.y <= walls[i].y + walls[i].height) {
+            if (player.x + player.width + player.velocity_x - 1 >= walls[i].x && player.x + player.velocity_x + 1 < walls[i].x + walls[i].width && player.y + player.height >= walls[i].y && player.y <= walls[i].y + walls[i].height) {
                 {
                     player.collision_right = true
                     player.velocity_x = 0
@@ -121,7 +121,7 @@ var player = {
         //left collision
 
         for (var i = 0; i < walls.length; i++) {
-            if (player.x + player.width + player.velocity_x >= walls[i].x && player.x + player.velocity_x < walls[i].x + walls[i].width && player.y + player.height >= walls[i].y && player.y <= walls[i].y + walls[i].height) {
+            if (player.x + player.width + player.velocity_x - 1 >= walls[i].x && player.x + player.velocity_x + 1 <= walls[i].x + walls[i].width && player.y + player.height >= walls[i].y && player.y <= walls[i].y + walls[i].height) {
                 {
 
                     player.collision_left = true
@@ -136,7 +136,7 @@ var player = {
         //is in air?
         if (player.floor != -1) {
 
-            if (player.y + player.height + player.velocity_y + 1 != walls[player.floor].y || !(player.x + player.width + player.velocity_x + 1 >= walls[player.floor].x && player.x - 1 + player.velocity_x <= walls[player.floor].x + walls[player.floor].width)) {
+            if (player.y + player.height + player.velocity_y + 1 != walls[player.floor].y || !(player.x + player.width + player.velocity_x - 1 >= walls[player.floor].x && player.x + 1 + player.velocity_x <= walls[player.floor].x + walls[player.floor].width)) {
                 player.onAir = true
                 player.floor = -1
 
@@ -146,7 +146,7 @@ var player = {
         //vertical collision
 
         for (var i = 0; i < walls.length; i++) {
-            if (player.y + player.height + player.velocity_y >= walls[i].y && player.y + player.velocity_y <= walls[i].y + walls[i].height && player.x + player.width + player.velocity_x + 1 >= walls[i].x && player.x - 1 + player.velocity_x <= walls[i].x + walls[i].width) {
+            if (player.y + player.height + player.velocity_y >= walls[i].y && player.y + player.velocity_y <= walls[i].y + walls[i].height && player.x + player.width + player.velocity_x - 1 >= walls[i].x && player.x + 1 + player.velocity_x <= walls[i].x + walls[i].width) {
                 if (player.y < walls[i].y) {
                     player.floor = i
                     console.log(player.floor)
