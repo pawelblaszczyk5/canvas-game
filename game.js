@@ -1,5 +1,5 @@
 import {
-    walls
+    maps
 } from "./level.js";
 import {
     player
@@ -7,6 +7,7 @@ import {
 var game = {
     canvas: document.createElement("canvas"),
     fps: 60,
+    level: 0,
     start: function () {
         this.canvas.width = 900;
         this.canvas.height = 600;
@@ -15,6 +16,7 @@ var game = {
         this.interval = setInterval(this.update, 1000 / this.fps);
     },
     update: function () {
+        let walls = maps[game.level]
         game.clear();
         player.draw();
         player.movement();

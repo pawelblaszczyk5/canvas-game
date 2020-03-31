@@ -2,7 +2,7 @@ import {
     game
 } from "./game.js"
 import {
-    walls
+    maps
 } from "./level.js"
 var player = {
     x: 200,
@@ -13,10 +13,10 @@ var player = {
     velocity_x: 0,
     onAir: true,
     velocity_y: 0,
-    jump_count: 0,
     crouching: false,
     floor: -1,
     movement: function () {
+        let walls = maps[game.level]
         this.velocity_x = 0;
         window.addEventListener('keydown', function (e) {
             player.keys = (player.keys || []);
@@ -72,6 +72,7 @@ var player = {
         game.context.fillRect(this.x, this.y, this.width, this.height);
     },
     colisions: function () {
+        let walls = maps[game.level]
         //horizontal collision
         for (var wall of walls) {
             if (player.x + player.width + player.velocity_x >= wall.x && player.x + player.velocity_x < wall.x + wall.width && player.y + player.height - 1 >= wall.y && player.y + 1 <= wall.y + wall.height) {
