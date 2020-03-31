@@ -27,6 +27,10 @@ var levels = () => {
     var wall4 = new components(30, 60, "black", 100, 540, 3)
     var level = [wall, wall2, wall3, wall4, wall5]
     maps.push(level)
+    var wall = new components(300, 20, "black", 50, 570, 0)
+    var wall2 = new components(300, 20, "black", 60, 560, 1)
+    var level = [wall, wall2]
+    maps.push(level)
 }
 
 levels()
