@@ -90,7 +90,7 @@ var player = {
             }
         }
         if (player.keys && player.keys["z"]) {
-            if (player.skills.dash)
+            if (player.skills.dash && player.wall_walking == false)
                 if (player.dash == 1) {
                     player.dashing = true;
                     player.dash = 0
@@ -143,6 +143,7 @@ var player = {
 
         }
         //horizontal collision
+        player.wall_walking = false;
         for (var wall of walls) {
             if (player.x + player.width + player.velocity_x >= wall.x && player.x + player.velocity_x < wall.x + wall.width && player.y + player.height - 1 >= wall.y && player.y + 1 <= wall.y + wall.height) {
                 {
