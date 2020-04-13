@@ -151,7 +151,7 @@ var player = {
                     if ((player.velocity_y > 0 && player.skills.walls_walking) || (player.wall_walking && player.velocity_y > 0 && player.velocity_y != 0.7)) {
                         player.wall_walking = true;
                         if (player.wall != wall.id) {
-                            console.log("nowa ściana")
+
                             player.wall = wall.id
                             if (player.jumps < 1) {
                                 player.can_jump = true
