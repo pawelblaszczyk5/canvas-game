@@ -19,8 +19,9 @@ var game = {
         let walls = maps[game.level]
         game.clear();
         player.draw();
-        player.movement();
         player.colisions();
+        player.movement();
+
         for (var wall of walls) {
             wall.update();
         }
